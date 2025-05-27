@@ -1,0 +1,272 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    /* Sử dụng Flexbox cho layout chính */
+    min-height: 100vh;
+    /* Đảm bảo trang có chiều cao ít nhất bằng chiều cao viewport */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    /* Chiều rộng cố định của sidebar */
+    background-color: #2c3e50;
+    /* Màu nền tối cho sidebar */
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    /* Giữ sidebar cố định khi cuộn */
+    top: 0;
+    left: 0;
+    height: 100vh;
+    /* Sidebar cao bằng chiều cao viewport */
+    overflow-y: auto;
+    /* Thêm thanh cuộn nếu nội dung sidebar quá dài */
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ecf0f1;
+    /* Màu chữ cho logo */
+}
+
+.sidebar .logo a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar nav ul li a {
+    display: block;
+    color: #ecf0f1;
+    /* Màu chữ cho link */
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+    background-color: #34495e;
+    /* Màu nền khi hover hoặc active */
+    color: #1abc9c;
+    /* Màu chữ khi hover hoặc active */
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    /* Cho phép main-content chiếm hết không gian còn lại */
+    padding: 20px;
+    overflow-y: auto;
+    /* Cho phép cuộn phần nội dung chính */
+}
+
+/* Header in Main Content */
+.main-header {
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #0056b3;
+}
+
+.user-info {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Section Styling (similar to previous example) */
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.section h2 {
+    color: #0056b3;
+    margin-top: 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Form & Table styles (kept from previous example for consistency) */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="file"],
+.form-group textarea,
+.form-group select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+    /* Add some space between buttons */
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.status-chua-xu-ly {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.status-da-xu-ly {
+    background-color: #007bff;
+}
+
+.status-da-thanh-toan {
+    background-color: #28a745;
+}
+
+.status-huy-bo {
+    background-color: #dc3545;
+}
+
+.flex-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.flex-row .form-group {
+    flex: 1;
+    min-width: 280px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        /* Đổi thành cột trên màn hình nhỏ */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        /* Sidebar không cố định chiều cao */
+        position: relative;
+        /* Không sticky nữa */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar nav ul {
+        display: flex;
+        /* Chuyển menu thành hàng ngang */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .sidebar nav ul li {
+        margin: 5px;
+    }
+
+    .main-content {
+        padding-top: 10px;
+        /* Giảm padding trên cùng */
+    }
+}
