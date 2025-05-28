@@ -1,6 +1,6 @@
 <div id="violations" class="section">
     <h2>🚨 Quản lý Dữ liệu Vi phạm</h2>
-    <form id="violationForm" method="POST" action="index.php?url=admin/violations">
+    <form id="violationForm" method="POST" action="index.php?url=admin/violations" enctype="multipart/form-data" >
         <div class="flex-row">
             <div class="form-group">
                 <label for="violationPlate">Biển số xe:</label>

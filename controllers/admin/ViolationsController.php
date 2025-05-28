@@ -24,6 +24,8 @@ class ViolationsController
         $violationFine = $_POST['violationFine'] ?? '';
         $violationImage = $_FILES['violationImage'] ?? null;
 
+
+
         // Kiểm tra dữ liệu hợp lệ
         if (
             empty($violationPlate) || empty($violationDate) || empty($violationTime) ||
@@ -36,9 +38,18 @@ class ViolationsController
                 'message' => 'Vui lòng điền đầy đủ thông tin vi phạm!'
             ]);
             exit;
-        }
-        else {            
-            
+        } else {
+            // Xử lý upload file nếu có
+            if ($violationImage && $violationImage['error'] === UPLOAD_ERR_OK) {
+                $targetDir = "uploads/violations/";
+                if (!is_dir($targetDir))
+                    mkdir($targetDir, 0777, true);
+                $fileName = time() . '_' . basename($violationImage['name']);
+                $targetFile = $targetDir . $fileName;
+                if (move_uploaded_file($violationImage['tmp_name'], $targetFile)) {
+                    $image_url = $targetFile;
+                }
+            }
 
             // Kiểm tra biển số xe có tồn tại không
             $vehicle = Vehicle::findByPlate($violationPlate);
@@ -59,12 +70,12 @@ class ViolationsController
                 'location' => $violationLocation,
                 'type' => $violationType,
                 'fine' => $violationFine,
-                'image' => $violationImage ? $violationImage['name'] : null
+                'image' => $image_url
             ];
-            Violation::create($data);
-            
-        
-          
+            $result = Violation::create($data);
+
+
+
 
 
             // Trả về phản hồi thành công
