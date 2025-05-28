@@ -1,6 +1,6 @@
 <div id="violations" class="section">
     <h2>🚨 Quản lý Dữ liệu Vi phạm</h2>
-    <form id="violationForm" method="POST" action="index.php?url=admin/violations" enctype="multipart/form-data" >
+    <form id="violationForm" method="POST" action="index.php?url=admin/violations" enctype="multipart/form-data">
         <div class="flex-row">
             <div class="form-group">
                 <label for="violationPlate">Biển số xe:</label>
@@ -135,7 +135,9 @@
                         <td><?= number_format($violation['fine_amount']) ?></td>
                         <td><span><?= htmlspecialchars($violation['status']) ?></span></td>
                         <td>
-                            <button class="btn">Sửa</button>
+                            <a href="index.php?url=admin/violations_edit&id=<?= $violation['id'] ?>"
+                                class="btn btn-warning">Sửa</a>
+
                             <button class="btn btn-danger">Xóa</button>
                         </td>
                     </tr>

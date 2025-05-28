@@ -94,4 +94,46 @@ class ViolationsController
         // header("Location: index.php?url=admin/violations");
         exit;
     }
+
+    public function edit()
+    {
+        $id = $_GET['id'] ?? null;
+        if (!$id)
+            die('Thiếu ID vi phạm');
+        $violation = Violation::findById($id);
+        ob_start();
+        include 'views/admin/violation_edit.php';
+        $content = ob_get_clean();
+        include 'views/layouts/admin.php';
+    }
+
+    public function update()
+    {
+        $id = $_POST['id'] ?? null;
+        if (!$id)
+            die('Thiếu ID vi phạm');
+        // Xử lý upload ảnh nếu có
+        $image_url = $_POST['old_image_url'] ?? '';
+        if (isset($_FILES['violationImage']) && $_FILES['violationImage']['error'] === UPLOAD_ERR_OK) {
+            $targetDir = "uploads/violations/";
+            if (!is_dir($targetDir))
+                mkdir($targetDir, 0777, true);
+            $fileName = time() . '_' . basename($_FILES['violationImage']['name']);
+            $targetFile = $targetDir . $fileName;
+            if (move_uploaded_file($_FILES['violationImage']['tmp_name'], $targetFile)) {
+                $image_url = $targetFile;
+            }
+        }
+        $data = [
+            'violation_time' => $_POST['violation_time'],
+            'location' => $_POST['location'],
+            'violation_type' => $_POST['violation_type'],
+            'fine_amount' => $_POST['fine_amount'],
+            'status' => $_POST['status'],
+            'image_url' => $image_url
+        ];
+        Violation::update($id, $data);
+        header('Location: index.php?url=admin/violations');
+        exit;
+    }
 }

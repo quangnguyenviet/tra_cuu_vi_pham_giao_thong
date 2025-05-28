@@ -66,6 +66,17 @@ switch ($url) {
         $controller = new ApprovalsController();
         $controller->index();
         break;
+    case 'admin/violations_edit':
+        require_once 'controllers/admin/ViolationsController.php';
+        $controller = new ViolationsController();
+        $controller->edit();
+        break;
+
+    case 'admin/violations_update':
+        require_once 'controllers/admin/ViolationsController.php';
+        $controller = new ViolationsController();
+        $controller->update();
+        break;
     default:
         echo "404 - Không tìm thấy trang.";
         break;

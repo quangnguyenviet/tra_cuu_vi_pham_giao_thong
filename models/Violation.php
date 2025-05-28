@@ -94,18 +94,40 @@ class Violation
         $conn->close();
         return $violations;
     }
-    public static function getRawSql($data)
-    {
-        $vehicle_id = $data['vehicle_id'] ?? 'NULL';
-        $violation_time = isset($data['violation_time']) ? "'" . addslashes($data['violation_time']) . "'" : 'NULL';
-        $location = isset($data['location']) ? "'" . addslashes($data['location']) . "'" : 'NULL';
-        $violation_type = isset($data['violation_type']) ? "'" . addslashes($data['violation_type']) . "'" : 'NULL';
-        $fine_amount = $data['fine_amount'] ?? 0;
-        $status = isset($data['status']) ? "'" . addslashes($data['status']) . "'" : 'NULL';
-        $image_url = isset($data['image_url']) ? "'" . addslashes($data['image_url']) . "'" : 'NULL';
-        $video_url = isset($data['video_url']) ? "'" . addslashes($data['video_url']) . "'" : 'NULL';
 
-        $sql = "INSERT INTO violations (vehicle_id, violation_time, location, violation_type, fine_amount, status, image_url, video_url, created_at) VALUES ($vehicle_id, $violation_time, $location, $violation_type, $fine_amount, $status, $image_url, $video_url, NOW());";
-        return $sql;
+    public static function findById($id)
+    {
+        require_once 'models/db.php';
+        $conn = connectDB();
+        $stmt = $conn->prepare("SELECT * FROM violations WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $violation = $result->fetch_assoc();
+        $stmt->close();
+        $conn->close();
+        return $violation;
     }
+
+    public static function update($id, $data)
+    {
+        require_once 'models/db.php';
+        $conn = connectDB();
+        $stmt = $conn->prepare("UPDATE violations SET violation_time=?, location=?, violation_type=?, fine_amount=?, status=?, image_url=? WHERE id=?");
+        $stmt->bind_param(
+            "ssssssi",
+            $data['violation_time'],
+            $data['location'],
+            $data['violation_type'],
+            $data['fine_amount'],
+            $data['status'],
+            $data['image_url'],
+            $id
+        );
+        $result = $stmt->execute();
+        $stmt->close();
+        $conn->close();
+        return $result;
+    }
+
 }
