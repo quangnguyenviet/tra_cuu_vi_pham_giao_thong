@@ -5,7 +5,7 @@ class ViolationsController
 {
     public function index()
     {
-        
+        $latestViolations = Violation::getLatest(5);
         ob_start(); // Bắt đầu bộ đệm đầu ra
         $title = 'Trang quản lý vi phạm'; // Tiêu đề trang, có thể được thay đổi từ controller
         include 'views/admin/violations.php';

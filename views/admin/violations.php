@@ -1,6 +1,6 @@
 <div id="violations" class="section">
     <h2>🚨 Quản lý Dữ liệu Vi phạm</h2>
-    <form id="violationForm" method="POST" action="index.php?url=admin/violations" >
+    <form id="violationForm" method="POST" action="index.php?url=admin/violations">
         <div class="flex-row">
             <div class="form-group">
                 <label for="violationPlate">Biển số xe:</label>
@@ -48,26 +48,26 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Xử lý phản hồi từ server
-                if (data.success) {
-                    alert('Vi phạm đã được thêm thành công!');
-                    // Có thể làm mới danh sách vi phạm hoặc cập nhật giao diện
-                } else {
-                    alert('Lỗi: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Đã xảy ra lỗi khi thêm vi phạm!');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Xử lý phản hồi từ server
+                    if (data.success) {
+                        alert('Vi phạm đã được thêm thành công!');
+                        // Có thể làm mới danh sách vi phạm hoặc cập nhật giao diện
+                    } else {
+                        alert('Lỗi: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã xảy ra lỗi khi thêm vi phạm!');
+                });
         });
 
     </script>
 
-    <h3>Danh sách Vi phạm</h3>
+    <h3>Danh sách Vi phạm đã thêm gần đây</h3>
     <table>
         <thead>
             <tr>
@@ -81,7 +81,7 @@
                 <th>Hành động</th>
             </tr>
         </thead>
-        <tbody>
+        <!-- <tbody>
             <tr>
                 <td><input type="checkbox"></td>
                 <td>30A-123.45</td>
@@ -121,6 +121,25 @@
                     <button class="btn btn-danger">Xóa</button>
                 </td>
             </tr>
+        </tbody> -->
+
+        <tbody>
+            <?php if (!empty($latestViolations))
+                foreach ($latestViolations as $violation): ?>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td><?= htmlspecialchars($violation['license_plate']) ?></td>
+                        <td><?= htmlspecialchars($violation['violation_type']) ?></td>
+                        <td><?= date('d/m/Y H:i', strtotime($violation['violation_time'])) ?></td>
+                        <td><?= htmlspecialchars($violation['location']) ?></td>
+                        <td><?= number_format($violation['fine_amount']) ?></td>
+                        <td><span><?= htmlspecialchars($violation['status']) ?></span></td>
+                        <td>
+                            <button class="btn">Sửa</button>
+                            <button class="btn btn-danger">Xóa</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
         </tbody>
     </table>
 </div>

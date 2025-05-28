@@ -50,6 +50,27 @@ class Violation
         $conn->close();
         return $result;
     }
+
+    public static function getLatest($limit = 5) {
+    require_once 'models/db.php';
+    $conn = connectDB();
+    $sql = "SELECT v.*, ve.license_plate 
+            FROM violations v 
+            JOIN vehicles ve ON v.vehicle_id = ve.id 
+            ORDER BY v.created_at DESC 
+            LIMIT ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $violations = [];
+    while ($row = $result->fetch_assoc()) {
+        $violations[] = $row;
+    }
+    $stmt->close();
+    $conn->close();
+    return $violations;
+}
     public static function getRawSql($data) {
     $vehicle_id = $data['vehicle_id'] ?? 'NULL';
     $violation_time = isset($data['violation_time']) ? "'" . addslashes($data['violation_time']) . "'" : 'NULL';

@@ -52,10 +52,13 @@ switch ($url) {
         }
         break;
     case 'admin/vehicles':
-        // requireRole('admin');
         require_once 'controllers/admin/VehiclesController.php';
         $controller = new VehiclesController();
-        $controller->index();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->store();
+        } else {
+            $controller->index();
+        }
         break;
     case 'admin/approvals':
         // requireRole('admin');

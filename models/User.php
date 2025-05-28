@@ -16,5 +16,29 @@ class User {
         $stmt->bind_param("ss", $data['username'], $data['password']);
         return $stmt->execute();
     }
+    public static function getAll() {
+        require_once 'models/db.php';
+        $conn = connectDB();
+        $sql = "SELECT id, full_name FROM users";
+        $result = $conn->query($sql);
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+        $conn->close();
+        return $users;
+    }
+    public static function findByCccd($cccd) {
+    require_once 'models/db.php';
+    $conn = connectDB();
+    $stmt = $conn->prepare("SELECT * FROM users WHERE cccd = ?");
+    $stmt->bind_param("s", $cccd);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
+    $conn->close();
+    return $user;
+}
 }
 

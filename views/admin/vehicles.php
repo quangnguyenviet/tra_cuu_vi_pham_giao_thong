@@ -1,4 +1,4 @@
-<div id="vehicles" class="section">
+<!-- <div id="vehicles" class="section">
     <h2>🚗 Quản lý Phương tiện</h2>
     <form method="post">
         <div class="flex-row">
@@ -56,6 +56,58 @@
                     <button class="btn btn-danger">Xóa</button>
                 </td>
             </tr>
+        </tbody>
+    </table>
+</div> -->
+
+
+
+
+<div id="vehicles" class="section">
+    <h2>🚗 Quản lý Phương tiện</h2>
+    <form method="post" action="index.php?url=admin/vehicles">
+        <div class="flex-row">
+            <div class="form-group">
+                <label for="vehiclePlate">Biển số xe:</label>
+                <input type="text" id="vehiclePlate" name="vehiclePlate" required>
+            </div>
+            <div class="form-group">
+                <label for="chassisNumber">Số khung:</label>
+                <input type="text" id="chassisNumber" name="chassisNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="ownerCccd">Số CCCD chủ sở hữu:</label>
+                <input type="text" id="ownerCccd" name="ownerCccd" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicleType">Loại xe:</label>
+                <input type="text" id="vehicleType" name="vehicleType" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm phương tiện</button>
+    </form>
+    <h3>Danh sách phương tiện</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Biển số</th>
+                <th>Số khung</th>
+                <th>Chủ sở hữu</th>
+                <th>Loại xe</th>
+                <th>Ngày tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($vehicles))
+                foreach ($vehicles as $v): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($v['license_plate']) ?></td>
+                        <td><?= htmlspecialchars($v['chassis_number']) ?></td>
+                        <td><?= htmlspecialchars($v['full_name']) ?></td>
+                        <td><?= htmlspecialchars($v['vehicle_type']) ?></td>
+                        <td><?= htmlspecialchars($v['created_at']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
         </tbody>
     </table>
 </div>
