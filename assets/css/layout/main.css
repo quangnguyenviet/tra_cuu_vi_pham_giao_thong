@@ -1,0 +1,59 @@
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+.container-custom {
+    width: 70%;
+    max-width: 1200px;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+header {
+    background: #00509e;
+    /* Màu xanh dương đậm */
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    border-bottom: #003f7e 3px solid;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+header .logo i {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.breadcrumb {
+    font-size: 1em;
+    margin-bottom: 18px;
+    color: #666;
+}
+.breadcrumb a {
+    color: #007bff;
+    text-decoration: none;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+.breadcrumb span {
+    margin: 0 4px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: #fff;
+    margin-top: 30px;
+}

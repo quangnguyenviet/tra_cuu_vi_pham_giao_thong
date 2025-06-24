@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Vi Phạm Giao Thông</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS cơ bản để trang nhìn ổn hơn một chút (bạn nên đặt trong file style.css) */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        header {
+            background: #00509e; /* Màu xanh dương đậm */
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: #003f7e 3px solid;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        header .logo i {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .search-section {
+            background: #fff;
+            padding: 30px 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .search-section h2 {
+            color: #00509e;
+            margin-bottom: 20px;
+        }
+
+        .search-form input[type="text"] {
+            padding: 12px 15px;
+            width: 70%;
+            max-width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+
+        .search-form button {
+            padding: 12px 25px;
+            background-color: #28a745; /* Màu xanh lá */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-form button:hover {
+            background-color: #218838;
+        }
+        .search-form button i {
+            margin-right: 8px;
+        }
+
+        .violations-list {
+            margin-top: 30px;
+        }
+
+        .violations-list h2 {
+            text-align: center;
+            color: #00509e;
+            margin-bottom: 20px;
+        }
+
+        .violation-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid #007bff; /* Màu xanh dương làm điểm nhấn */
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
+        }
+        .violation-card:hover {
+             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .violation-card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        .violation-card .license-plate {
+            font-weight: bold;
+            color: #d9534f; /* Màu đỏ cho biển số */
+            font-size: 1.2em;
+        }
+
+        .violation-card p {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            color: #555;
+        }
+        .violation-card p strong {
+            color: #333;
+        }
+
+        .violation-card .violation-footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .violation-card .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .violation-card .status.pending {
+            background-color: #ffc107; /* Vàng */
+            color: #333;
+        }
+
+        .violation-card .status.resolved {
+            background-color: #28a745; /* Xanh lá */
+            color: white;
+        }
+         .violation-card .status.new {
+            background-color: #17a2b8; /* Xanh ngọc */
+            color: white;
+        }
+
+
+        .violation-card .details-link {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .violation-card .details-link:hover {
+            color: #0056b3;
+        }
+         .violation-card .details-link i {
+            margin-left: 5px;
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: #fff;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-car-burst"></i> </div>
+            <h1>Tra Cứu Vi Phạm Giao Thông</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="search-section">
+            <h2>Tìm kiếm thông tin vi phạm</h2>
+            <form action="/tra-cuu" method="GET" class="search-form">
+                <input type="text" name="bien_so" placeholder="Nhập biển số xe (ví dụ: 29A12345)" required>
+                <button type="submit"><i class="fas fa-search"></i>Tra Cứu</button>
+            </form>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">Vui lòng nhập chính xác biển số xe để nhận kết quả nhanh nhất.</p>
+        </section>
+
+        <section class="violations-list">
+            <h2><i class="fas fa-list-ul"></i> Một số vi phạm ghi nhận gần đây</h2>
+
+            <article class="violation-card">
+                <h3><i class="fas fa-ban"></i> Vượt đèn đỏ</h3>
+                <p><strong class="license-plate">29A-123.45</strong></p>
+                <p><strong>Thời gian:</strong> 08:30 - 28/05/2025</p>
+                <p><strong>Địa điểm:</strong> Ngã tư Nguyễn Trãi - Khuất Duy Tiến, Hà Nội</p>
+                <div class="violation-footer">
+                    <span class="status new">Mới ghi nhận</span>
+                    <a href="/chi-tiet-vi-pham?id=vp001" class="details-link">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="violation-card">
+                <h3><i class="fas fa-tachometer-alt"></i> Vi phạm tốc độ</h3>
+                 <p><strong class="license-plate">30F-678.90</strong></p>
+                <p><strong>Thời gian:</strong> 14:15 - 27/05/2025</p>
+                <p><strong>Địa điểm:</strong> Đường Võ Nguyên Giáp, đoạn qua xã Vĩnh Ngọc, Đông Anh, Hà Nội</p>
+                <div class="violation-footer">
+                    <span class="status pending">Chưa xử lý</span>
+                    <a href="/chi-tiet-vi-pham?id=vp002" class="details-link">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="violation-card">
+                 <h3><i class="fas fa-parking"></i> Đỗ xe sai quy định</h3>
+                 <p><strong class="license-plate">99A-001.02</strong></p>
+                <p><strong>Thời gian:</strong> 10:00 - 26/05/2025</p>
+                <p><strong>Địa điểm:</strong> Trước cổng Bệnh viện Đa khoa tỉnh Bắc Ninh, Đường Nguyễn Quyền, Bắc Ninh</p>
+                 <div class="violation-footer">
+                    <span class="status resolved">Đã xử lý</span>
+                    <a href="/chi-tiet-vi-pham?id=vp003" class="details-link">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Trung Tâm Xử Lý Vi Phạm Giao Thông. Bảo lưu mọi quyền.</p>
+            <p>Liên hệ: support@giaothong.gov.vn | Hotline: 1900 xxxx</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

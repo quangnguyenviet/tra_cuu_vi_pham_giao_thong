@@ -9,27 +9,30 @@
         <?php echo isset($title) ? $title : 'Admin Dashboard'; ?><!-- Tiêu đề trang, có thể được thay đổi từ controller -->
     </title>
     <link rel="stylesheet" href="assets/css/layout/admin.css"> <!-- Đường dẫn đến file CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>
 
-    <div class="sidebar">
-        <div class="logo">
-            <a href="#">Admin Dashboard</a>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.php?url=admin/dashboard" class="active">📊 Tổng quan</a></li>
-                <!-- Thêm class js-link cho các link cần load động -->
-                <li><a href="index.php?url=admin/violations">🚨 Quản lý Vi phạm</a></li>
-                <li><a href="index.php?url=admin/vehicles">🚗 Quản lý Phương tiện</a></li>
-                <li><a href="index.php?url=admin/approvals">✅ Phê duyệt Xử phạt</a></li>
-                <!-- <li><a href="users">👥 Quản lý Người dùng</a></li> -->
-                <!-- <li><a href="setting">⚙️ Cài đặt</a></li> -->
-                <li><a href="logout">🚪 Đăng xuất</a></li>
-            </ul>
-        </nav>
+<div class="sidebar">
+    <div class="logo">
+        <a href="index.php?url=admin/dashboard"><i class="fas fa-shield-alt"></i> Admin Dashboard</a>
     </div>
+    <nav>
+        <ul>
+            <li><a href="index.php?url=admin/dashboard"><i class="fas fa-chart-pie"></i> Tổng quan</a></li>
+            <li class="has-submenu">
+                <a href="javascript:void(0);" class="toggle-submenu"><i class="fas fa-exclamation-triangle"></i> Quản lý vi phạm <span class="arrow">&#9662;</span></a>
+                <ul class="submenu">
+                    <li><a href="index.php?url=admin/violations_add"><i class="fas fa-plus-circle"></i> Thêm vi phạm</a></li>
+                    <li><a href="index.php?url=admin/violations"><i class="fas fa-list"></i> Danh sách vi phạm</a></li>
+                </ul>
+            </li>
+            <li><a href="index.php?url=admin/vehicles"><i class="fas fa-car"></i> Quản lý Phương tiện</a></li>
+            <li><a href="index.php?url=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+        </ul>
+    </nav>
+</div>
 
     <div class="main-content">
         <?php
@@ -42,7 +45,7 @@
 
     </div>
 
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sidebarLinks = document.querySelectorAll('.sidebar nav ul li a');
@@ -69,13 +72,28 @@
                     this.classList.add('active');
                 });
             });
+
+
+            // Toggle submenu for "Quản lý vi phạm"
+            const toggleMenu = document.querySelector('.toggle-submenu');
+            const submenu = document.querySelector('.submenu');
+            if (toggleMenu && submenu) {
+                toggleMenu.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (submenu.style.display === 'none' || submenu.style.display === '') {
+                        submenu.style.display = 'block';
+                    } else {
+                        submenu.style.display = 'none';
+                    }
+                });
+            }
         });
     </script>
 
 
 
 
-    
+
 
 </body>
 

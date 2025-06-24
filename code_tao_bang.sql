@@ -35,6 +35,13 @@ CREATE TABLE violations (
   created_at DATETIME,
   FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
 );
+ALTER TABLE violations
+ADD COLUMN regulation NVARCHAR(255),
+ADD COLUMN regulation_desc TEXT,
+ADD COLUMN additional_penalty NVARCHAR(255),
+ADD COLUMN deadline DATE;
+ALTER TABLE violations ADD COLUMN expected_fine_from INT NULL,
+ADD COLUMN expected_fine_to int null;
 
 -- ==== Thanh toán ====
 CREATE TABLE payments (

@@ -1,7 +1,9 @@
 <?php
-class Vehicle{
+class Vehicle
+{
 
-    public static function findById($id) {
+    public static function findById($id)
+    {
         require_once 'models/db.php';
         $conn = connectDB();
         $stmt = $conn->prepare("SELECT * FROM vehicles WHERE id = ?");
@@ -13,7 +15,8 @@ class Vehicle{
         $conn->close();
         return $vehicle;
     }
-    public static function findByPlate($plate) {
+    public static function findByPlate($plate)
+    {
         require_once 'models/db.php';
         $conn = connectDB();
         $stmt = $conn->prepare("SELECT * FROM vehicles WHERE license_plate = ?");
@@ -25,9 +28,10 @@ class Vehicle{
         $conn->close();
         return $vehicle;
     }
-    
-    
-     public static function getAll() {
+
+
+    public static function getAll()
+    {
         require_once 'models/db.php';
         $conn = connectDB();
         $sql = "SELECT v.*, u.full_name FROM vehicles v LEFT JOIN users u ON v.user_id = u.id ORDER BY v.id DESC";
@@ -40,7 +44,8 @@ class Vehicle{
         return $vehicles;
     }
 
-    public static function create($data) {
+    public static function create($data)
+    {
         require_once 'models/db.php';
         $conn = connectDB();
         $stmt = $conn->prepare("INSERT INTO vehicles (license_plate, chassis_number, user_id, created_at, vehicle_type) VALUES (?, ?, ?, NOW(), ?)");
@@ -56,4 +61,17 @@ class Vehicle{
         $conn->close();
         return $result;
     }
+
+    public static function countAll()
+    {
+        require_once 'models/db.php';
+        $conn = connectDB();
+        $sql = "SELECT COUNT(*) as total FROM vehicles";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row['total'] ?? 0;
+    }
+
+
 }

@@ -1,147 +1,200 @@
 <div id="violations" class="section">
-    <h2>🚨 Quản lý Dữ liệu Vi phạm</h2>
-    <form id="violationForm" method="POST" action="index.php?url=admin/violations" enctype="multipart/form-data">
-        <div class="flex-row">
-            <div class="form-group">
-                <label for="violationPlate">Biển số xe:</label>
-                <input type="text" id="violationPlate" name="violationPlate" placeholder="Ví dụ: 30A-123.45">
-            </div>
-            <div class="form-group">
-                <label for="violationDate">Thời gian vi phạm:</label>
-                <input type="date" id="violationDate" name="violationDate">
-            </div>
-            <div class="form-group">
-                <label for="violationTime">Giờ vi phạm:</label>
-                <input type="time" id="violationTime" name="violationTime">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="violationLocation">Địa điểm:</label>
-            <input type="text" id="violationLocation" name="violationLocation"
-                placeholder="Ví dụ: Ngã tư X, Đường Y, Quận Z">
-        </div>
-        <div class="form-group">
-            <label for="violationType">Lỗi vi phạm:</label>
-            <textarea id="violationType" name="violationType"
-                placeholder="Mô tả chi tiết lỗi vi phạm, ví dụ: Vượt đèn đỏ"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="violationFine">Mức phạt (VND):</label>
-            <input type="number" id="violationFine" name="violationFine" placeholder="Ví dụ: 500000">
-        </div>
-        <div class="form-group">
-            <label for="violationImage">Hình ảnh/Video liên quan:</label>
-            <input type="file" id="violationImage" name="violationImage" accept="image/*,video/*">
-        </div>
-        <button type="button" class="btn btn-primary">Thêm Vi phạm Mới</button>
-        <button type="button" class="btn btn-danger">Xóa Vi phạm Đã Chọn</button>
+    <h2 class="page-title"><i class="fas fa-list"></i> Danh sách Vi phạm</h2>
+    <form method="get" action="index.php" class="search-form">
+        <input type="hidden" name="url" value="admin/violations">
+        <input type="text" name="search_plate" class="search-input" placeholder="Nhập biển số xe..." value="<?= htmlspecialchars($_GET['search_plate'] ?? '') ?>">
+        <select name="search_status" class="search-select">
+            <option value="">-- Tất cả trạng thái --</option>
+            <option value="Chưa nộp phạt" <?= (($_GET['search_status'] ?? '') === 'Chưa nộp phạt') ? 'selected' : '' ?>>Chưa nộp phạt</option>
+            <option value="Đã nộp phạt" <?= (($_GET['search_status'] ?? '') === 'Đã nộp phạt') ? 'selected' : '' ?>>Đã nộp phạt</option>
+        </select>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Tìm kiếm</button>
     </form>
-
-    <script>
-        // xử lý sự kiện khi nhấn nút "Thêm Vi phạm Mới"
-        document.querySelector('.btn-primary').addEventListener('click', function () {
-            const form = document.getElementById('violationForm');
-            const formData = new FormData(form);
-
-            // Gửi dữ liệu đến server (giả sử có endpoint xử lý)
-            fetch('index.php?url=admin/violations', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    // Xử lý phản hồi từ server
-                    if (data.success) {
-                        alert('Vi phạm đã được thêm thành công!');
-                        // Có thể làm mới danh sách vi phạm hoặc cập nhật giao diện
-                    } else {
-                        alert('Lỗi: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã xảy ra lỗi khi thêm vi phạm!');
-                });
-        });
-
-    </script>
-
-    <h3>Danh sách Vi phạm đã thêm gần đây</h3>
-    <table>
-        <thead>
-            <tr>
-                <th><input type="checkbox"></th>
-                <th>Biển số</th>
-                <th>Lỗi vi phạm</th>
-                <th>Thời gian</th>
-                <th>Địa điểm</th>
-                <th>Mức phạt</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <!-- <tbody>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>30A-123.45</td>
-                <td>Vượt đèn đỏ</td>
-                <td>20/05/2025 10:30</td>
-                <td>Ngã tư Hai Bà Trưng - Lý Thường Kiệt</td>
-                <td>500.000</td>
-                <td><span class="status-chua-xu-ly">Chưa xử lý</span></td>
-                <td>
-                    <button class="btn">Sửa</button>
-                    <button class="btn btn-danger">Xóa</button>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>51F-678.90</td>
-                <td>Đi sai làn đường</td>
-                <td>18/05/2025 09:15</td>
-                <td>Đường X, Quận Y</td>
-                <td>350.000</td>
-                <td><span class="status-da-xu-ly">Đã xử lý</span></td>
-                <td>
-                    <button class="btn">Sửa</button>
-                    <button class="btn btn-danger">Xóa</button>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>29C-000.00</td>
-                <td>Đỗ xe sai quy định</td>
-                <td>15/05/2025 14:00</td>
-                <td>Phố đi bộ Hồ Gươm</td>
-                <td>700.000</td>
-                <td><span class="status-da-thanh-toan">Đã thanh toán</span></td>
-                <td>
-                    <button class="btn">Sửa</button>
-                    <button class="btn btn-danger">Xóa</button>
-                </td>
-            </tr>
-        </tbody> -->
-
-        <tbody>
-            <?php if (!empty($latestViolations))
-                foreach ($latestViolations as $violation): ?>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td><?= htmlspecialchars($violation['license_plate']) ?></td>
-                        <td><?= htmlspecialchars($violation['violation_type']) ?></td>
-                        <td><?= date('d/m/Y H:i', strtotime($violation['violation_time'])) ?></td>
-                        <td><?= htmlspecialchars($violation['location']) ?></td>
-                        <td><?= number_format($violation['fine_amount']) ?></td>
-                        <td><span><?= htmlspecialchars($violation['status']) ?></span></td>
-                        <td>
-                            <a href="index.php?url=admin/violations_edit&id=<?= $violation['id'] ?>"
-                                class="btn btn-warning">Sửa</a>
-
-                            <button class="btn btn-danger">Xóa</button>
-                        </td>
-                    </tr>
+    <div class="table-responsive">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>Biển số</th>
+                    <th>Lỗi vi phạm</th>
+                    <th>Thời gian</th>
+                    <th>Địa điểm</th>
+                    <th>Mức phạt</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($latestViolations))
+                    foreach ($latestViolations as $violation): ?>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><?= htmlspecialchars($violation['license_plate']) ?></td>
+                            <td><?= htmlspecialchars($violation['violation_type']) ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($violation['violation_time'])) ?></td>
+                            <td><?= htmlspecialchars($violation['location']) ?></td>
+                            <td><?= number_format($violation['fine_amount']) ?></td>
+                            <td>
+                                <span class="status <?= $violation['status'] === 'Đã nộp phạt' ? 'paid' : 'unpaid' ?>">
+                                    <?= htmlspecialchars($violation['status']) ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="index.php?url=admin/violations_edit&id=<?= $violation['id'] ?>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Sửa</a>
+                                <button type="button" class="btn btn-danger btn-sm btn-delete-violation" data-id="<?= $violation['id'] ?>"><i class="fas fa-trash"></i> Xóa</button>
+                            </td>
+                        </tr>
                 <?php endforeach; ?>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        <?php if ($totalPages > 1): ?>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="index.php?url=admin/violations&page=<?= $i ?>" class="<?= ($i == $page) ? 'active' : '' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+        <?php endif; ?>
+    </div>
 </div>
+
+<!-- Font Awesome CDN nếu chưa có -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+#violations {
+    max-width: 1100px;
+    margin: 32px auto 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    padding: 32px 24px 24px 24px;
+}
+.page-title {
+    color: #00509e;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: 600;
+}
+.search-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.search-input, .search-select {
+    padding: 8px 12px;
+    border: 1px solid #b7c6d9;
+    border-radius: 5px;
+    font-size: 1em;
+    background: #f8fafc;
+    min-width: 180px;
+}
+.btn.btn-primary {
+    background: #00509e;
+    color: #fff;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn.btn-primary:hover { background: #003f7e; }
+.btn.btn-warning { background: #ffc107; color: #222; }
+.btn.btn-warning:hover { background: #e0a800; }
+.btn.btn-danger { background: #dc3545; color: #fff; }
+.btn.btn-danger:hover { background: #b52a37; }
+.btn-sm { padding: 6px 12px; font-size: 0.98em; }
+.table-responsive { overflow-x: auto; }
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.styled-table th, .styled-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e0e6f0;
+    text-align: left;
+}
+.styled-table th {
+    background: #f0f4fa;
+    color: #00509e;
+    font-weight: 600;
+}
+.styled-table tr:hover {
+    background: #f6faff;
+}
+.status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.98em;
+}
+.status.paid {
+    background: #e6f9e6;
+    color: #1e7e34;
+    border: 1px solid #b2e2b2;
+}
+.status.unpaid {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+.pagination {
+    text-align: center;
+    margin: 18px 0 0 0;
+}
+.pagination a {
+    margin: 0 3px;
+    padding: 6px 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #00509e;
+    background: #fff;
+    transition: background 0.2s, color 0.2s;
+}
+.pagination a.active,
+.pagination a:hover {
+    background: #00509e;
+    color: #fff;
+    border-color: #00509e;
+}
+@media (max-width: 900px) {
+    #violations { padding: 12px 2px; }
+    .search-form { flex-direction: column; gap: 8px; }
+    .styled-table th, .styled-table td { padding: 8px 4px; }
+}
+</style>
+
+<script>
+document.querySelectorAll('.btn-delete-violation').forEach(btn => {
+    btn.addEventListener('click', function () {
+        if (!confirm('Bạn có chắc chắn muốn xóa vi phạm này?')) return;
+        const id = this.getAttribute('data-id');
+        fetch(`index.php?url=admin/violations_delete&id=${id}`, {
+            method: 'GET'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Đã xóa thành công!');
+                    location.reload();
+                } else {
+                    alert(data.message || 'Xóa thất bại!');
+                }
+            })
+            .catch(() => alert('Lỗi kết nối máy chủ!'));
+    });
+});
+</script>

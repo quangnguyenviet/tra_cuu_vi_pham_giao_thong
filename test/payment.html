@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nộp Phạt Vi Phạm Giao Thông - VP001</title>
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS cơ bản (nên đặt trong file style.css riêng) */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px; /* Trang thanh toán có thể hẹp hơn */
+            margin: auto;
+            padding: 20px 0;
+        }
+
+        header {
+            background: #00509e;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: #003f7e 3px solid;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .breadcrumb {
+            padding: 10px 0;
+            font-size: 0.9em;
+        }
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb span { color: #666; }
+
+        .payment-card {
+            background: #fff;
+            padding: 25px 30px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-card h2 {
+            color: #00509e;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .payment-card h2 i { margin-right: 10px; }
+
+        .info-section, .form-section, .payment-methods-section, .summary-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section h3, .form-section h3, .payment-methods-section h3, .summary-section h3 {
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .info-section p, .info-item {
+            margin-bottom: 8px;
+            font-size: 1em;
+            color: #555;
+        }
+        .info-section strong, .info-item strong { color: #333; font-weight: bold; }
+        .info-section .license-plate {
+            font-weight: bold; color: #d9534f; font-size: 1.1em;
+        }
+        .info-section .fine-amount {
+            font-weight: bold; color: #dc3545; font-size: 1.3em;
+        }
+
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"] {
+            width: calc(100% - 22px); /* Adjust for padding and border */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .payment-method {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1 1 150px; /* Responsive items */
+            text-align: center;
+            min-width: 120px;
+        }
+        .payment-method:hover, .payment-method.selected {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+        }
+        .payment-method input[type="radio"] {
+            display: none; /* Ẩn radio button gốc */
+        }
+        .payment-method i {
+            font-size: 2em;
+            margin-bottom: 8px;
+            color: #007bff;
+        }
+        .payment-method span {
+            display: block;
+            font-size: 0.9em;
+        }
+        .payment-method.selected i { color: #0056b3; }
+
+
+        #card-details, #ewallet-instructions, #bank-transfer-instructions {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            /* display: none; Initially hidden, shown by JS */
+        }
+        /* Example: Initially show one, hide others with JS */
+        #ewallet-instructions, #bank-transfer-instructions { display: none; }
+
+
+        .total-amount {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #28a745;
+            text-align: right;
+        }
+
+        .secure-payment-notice {
+            font-size: 0.85em;
+            color: #666;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .secure-payment-notice i { color: #28a745; }
+
+        .submit-button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover { background-color: #0056b3; }
+        .submit-button i { margin-right: 8px; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: #fff;
+            margin-top: 30px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Nộp Phạt Vi Phạm Giao Thông</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb">
+            <a href="trang-chu.html"><i class="fas fa-home"></i> Trang chủ</a> /
+            <a href="chi-tiet-vi-pham.html?id=VP001">Chi tiết vi phạm VP001</a> /
+            <span>Thanh toán</span>
+        </nav>
+
+        <div class="payment-card">
+            <h2><i class="fas fa-file-invoice-dollar"></i> Xác nhận và Thanh toán Quyết định #VP001</h2>
+
+            <section class="info-section">
+                <h3><i class="fas fa-receipt"></i> Thông tin vi phạm cần thanh toán</h3>
+                <div class="info-item"><strong>Mã quyết định/vi phạm:</strong> VP001</div>
+                <div class="info-item"><strong>Biển số xe:</strong> <span class="license-plate">29A-123.45</span></div>
+                <div class="info-item"><strong>Loại vi phạm:</strong> Vượt đèn đỏ</div>
+                <div class="info-item"><strong>Ngày vi phạm:</strong> 28/05/2025</div>
+                <div class="info-item"><strong>Số tiền phạt:</strong> <span class="fine-amount">5.000.000 VNĐ</span></div>
+            </section>
+
+            <form id="paymentForm" action="/xu-ly-thanh-toan" method="POST">
+                <input type="hidden" name="violation_id" value="VP001">
+
+                <section class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Thông tin người nộp phạt</h3>
+                    <div class="form-group">
+                        <label for="payerName">Họ và tên người nộp:</label>
+                        <input type="text" id="payerName" name="payer_name" value="Nguyễn Văn A" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="payerPhone">Số điện thoại:</label>
+                        <input type="tel" id="payerPhone" name="payer_phone" placeholder="09xxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="payerEmail">Email (để nhận biên lai):</label>
+                        <input type="email" id="payerEmail" name="payer_email" placeholder="email@example.com" required>
+                    </div>
+                </section>
+
+                <section class="payment-methods-section">
+                    <h3><i class="fas fa-credit-card"></i> Chọn phương thức thanh toán</h3>
+                    <div class="payment-methods">
+                        <label class="payment-method selected" for="payment_card" onclick="selectPaymentMethod('card')">
+                            <input type="radio" id="payment_card" name="payment_method" value="card" checked>
+                            <i class="fas fa-credit-card"></i>
+                            <span>Thẻ Ngân hàng<br>(ATM/Visa/Master)</span>
+                        </label>
+                        <label class="payment-method" for="payment_ewallet" onclick="selectPaymentMethod('ewallet')">
+                            <input type="radio" id="payment_ewallet" name="payment_method" value="ewallet">
+                            <i class="fas fa-wallet"></i>
+                            <span>Ví điện tử<br>(MoMo, VNPay, ZaloPay)</span>
+                        </label>
+                        <label class="payment-method" for="payment_bank_transfer" onclick="selectPaymentMethod('bank_transfer')">
+                            <input type="radio" id="payment_bank_transfer" name="payment_method" value="bank_transfer">
+                            <i class="fas fa-university"></i>
+                            <span>Chuyển khoản NH</span>
+                        </label>
+                    </div>
+
+                    <div id="card-details" class="payment-method-details">
+                        <p>Bạn sẽ được chuyển đến cổng thanh toán an toàn để nhập thông tin thẻ.</p>
+                        <div class="form-group">
+                            <label for="cardNumber">Số thẻ:</label>
+                            <input type="text" id="cardNumber" name="card_number" placeholder="XXXX XXXX XXXX XXXX">
+                        </div>
+                         <div class="form-group" style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="cardExpiry">Ngày hết hạn (MM/YY):</label>
+                                <input type="text" id="cardExpiry" name="card_expiry" placeholder="MM/YY">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="cardCVC">CVV/CVC:</label>
+                                <input type="text" id="cardCVC" name="card_cvc" placeholder="123">
+                            </div>
+                        </div>
+                        <p class="secure-payment-notice"><i class="fas fa-lock"></i> Thông tin thẻ của bạn được bảo mật.</p>
+                    </div>
+                    <div id="ewallet-instructions" class="payment-method-details">
+                        <p>Sau khi xác nhận, hệ thống sẽ tạo mã QR hoặc chuyển bạn đến ứng dụng ví điện tử để hoàn tất thanh toán.</p>
+                        <div style="text-align:center; margin-top:10px;">
+                            <img src="https://via.placeholder.com/150.png?text=QR+Code+Ví" alt="QR Code Ví điện tử" style="border:1px solid #ccc;">
+                        </div>
+                    </div>
+                    <div id="bank-transfer-instructions" class="payment-method-details">
+                        <p>Vui lòng chuyển khoản đến thông tin tài khoản sau:</p>
+                        <ul>
+                            <li><strong>Ngân hàng:</strong> [Tên Ngân Hàng Kho Bạc Nhà Nước]</li>
+                            <li><strong>Số tài khoản:</strong> [Số Tài Khoản Kho Bạc]</li>
+                            <li><strong>Chủ tài khoản:</strong> Kho Bạc Nhà Nước [Tên Tỉnh/TP]</li>
+                            <li><strong>Nội dung chuyển khoản:</strong> Nop phat VP001 - Bien so 29A12345</li>
+                        </ul>
+                        <p><strong>Lưu ý:</strong> Ghi chính xác nội dung chuyển khoản để giao dịch được xử lý nhanh chóng.</p>
+                    </div>
+                </section>
+
+                <section class="summary-section">
+                    <h3><i class="fas fa-dollar-sign"></i> Tổng tiền thanh toán</h3>
+                    <p class="total-amount">5.000.000 VNĐ</p>
+                </section>
+
+                <div class="secure-payment-notice">
+                    <p><i class="fas fa-shield-alt"></i> Giao dịch được thực hiện qua cổng thanh toán bảo mật.</p>
+                </div>
+
+                <div class="submit-button-container">
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-check-circle"></i> Tiến hành Thanh toán
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Trung Tâm Xử Lý Vi Phạm Giao Thông. Bảo lưu mọi quyền.</p>
+            <p>Hỗ trợ thanh toán: hotrothanhtoan@giaothong.gov.vn | 1900 yyyy</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript cơ bản để xử lý việc chọn phương thức thanh toán
+        function selectPaymentMethod(method) {
+            // Bỏ chọn tất cả các mục
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            // Chọn mục được nhấp
+            document.querySelector(`label[for="payment_${method}"]`).classList.add('selected');
+
+            // Ẩn tất cả các chi tiết phương thức thanh toán
+            document.querySelectorAll('.payment-method-details').forEach(el => el.style.display = 'none');
+
+            // Hiển thị chi tiết cho phương thức được chọn
+            if (method === 'card') {
+                document.getElementById('card-details').style.display = 'block';
+            } else if (method === 'ewallet') {
+                document.getElementById('ewallet-instructions').style.display = 'block';
+            } else if (method === 'bank_transfer') {
+                document.getElementById('bank-transfer-instructions').style.display = 'block';
+            }
+        }
+
+        // Đảm bảo phương thức được chọn ban đầu (nếu có radio checked) được hiển thị đúng
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkedMethod = document.querySelector('input[name="payment_method"]:checked');
+            if (checkedMethod) {
+                selectPaymentMethod(checkedMethod.value);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -5,23 +5,43 @@ class AuthController
 {
     public function login()
     {
-        $error = '';
+        // Nếu là POST (AJAX fetch)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            $user = User::findByUsername($username);
+            // Chỉ cho phép tài khoản admin đăng nhập
+            $user = User::findAdmin($username);
 
             if ($user && password_verify($password, $user['password'])) {
-                session_start();
-                $_SESSION['user_id'] = $user['id']; 
-                header("Location: index.php?url=dashboard");
-                
+                $_SESSION['admin_logged_in'] = true;
+                $_SESSION['admin_username'] = $user['username'];
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => true,
+                    'redirect' => 'index.php?url=admin/dashboard'
+                ]);
+                exit;
             } else {
-                $error = "Sai tài khoản hoặc mật khẩu!";
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'error' => 'Sai tài khoản hoặc mật khẩu, hoặc bạn không có quyền truy cập!'
+                ]);
+                exit;
             }
         }
+
+        // Nếu là GET, hiển thị form
+        $error = '';
         include 'views/login.php';
+    }
+
+    public function logout()
+    {
+        session_destroy();
+        header('Location: index.php?url=login');
+        exit;
     }
 
     public function register()

@@ -13,23 +13,19 @@ class VehiclesController
     {
         $vehicles = Vehicle::getAll();
         // Lấy danh sách user để chọn chủ sở hữu
-        $users = User::getAll(); // Bạn cần viết hàm getAll trong User.php
         ob_start();
         include 'views/admin/vehicles.php';
         $content = ob_get_clean();
         include 'views/layouts/admin.php';
     }
 
-    public function create()
-    {
-        // Code to show form for creating a new vehicle
-    }
+
 
     public function store()
     {
         require_once 'models/User.php';
         $cccd = $_POST['ownerCccd'] ?? '';
-        $user = User::findByCccd($cccd); // Viết hàm này ở model User
+        $user = User::findByCccd($cccd);
 
         if (!$user) {
             // Xử lý khi không tìm thấy user
